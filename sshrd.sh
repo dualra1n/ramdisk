@@ -109,21 +109,13 @@ if [[ "$deviceid" == *"iPad"* ]] && [[ "$1" == *"16"* ]]; then
 else
     if [[ "$deviceid" == *"iPad"* ]]; then
         device_os=iPadOS
-        device=iPad
     elif [[ "$deviceid" == *"iPod"* ]]; then
         device_os=iOS
-        device=iPod
     else
         device_os=iOS
-        device=iPhone
     fi
 
-
-    buildid=$(curl -sL https://api.ipsw.me/v4/ipsw/$1 | "$oscheck"/jq '[.[] | select(.identifier | startswith("'$device'")) | .buildid][0]' --raw-output)
-    if [ "$buildid" == "19B75" ]; then
-        buildid=19B74
-    fi
-    ipswurl=$(curl -sL https://api.appledb.dev/ios/$device_os\;$buildid.json | "$oscheck"/jq -r .devices\[\"$deviceid\"\].ipsw)
+    ipswurl=$(curl -sL https://api.appledb.dev/main.json | "$oscheck"/jq -r '.ios[] | select(.version == "'$1'") | select(.osStr == "'$device_os'").devices["'$deviceid'"].ipsw')
 fi
 
 "$oscheck"/gaster pwn
