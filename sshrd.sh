@@ -117,6 +117,7 @@ fi
 "$oscheck"/gaster pwn
 "$oscheck"/img4tool -e -s shsh/"${check}".shsh -m work/IM4M
 
+echo "[*] Copying files to work directory"
 cd work
 cp ../ipsw/extracted/BuildManifest.plist BuildManifest.plist
 cp ../ipsw/extracted/"$(awk "/""${replace}""/{x=1}x&&/iBSS[.]/{print;exit}" BuildManifest.plist | grep '<string>' |cut -d\> -f2 |cut -d\< -f1)" $(pwd)
