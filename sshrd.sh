@@ -49,6 +49,30 @@ replace=$("$oscheck"/irecovery -q | grep MODEL | sed 's/MODEL: //')
 deviceid=$("$oscheck"/irecovery -q | grep PRODUCT | sed 's/PRODUCT: //')
 ipswurl=$(curl -sL "https://api.ipsw.me/v4/device/$deviceid?type=ipsw" | "$oscheck"/jq '.firmwares | .[] | select(.version=="'$1'")' | "$oscheck"/jq -s '.[0] | .url' --raw-output)
 
+if [ "$ipswurl" = "null" ] || [ -z "$ipswurl" ]; then
+    while true; do
+        echo "[/] We couldn't get the ipsw curl. Do you want to proceed with -k option? (yes/no)"
+        
+        read user_response
+        
+        case $user_response in
+            [Yy]*)
+                echo "[/] Proceeding with -k option..."
+                ipswurl=$(curl -sL "https://api.ipsw.me/v4/device/$deviceid?type=ipsw" | "$oscheck"/jq '.firmwares | .[] | select(.version=="'$1'")' | "$oscheck"/jq -s '.[0] | .url' --raw-output)
+                break
+                ;;
+            [Nn]*)
+                echo "[/] Exiting. User chose not to proceed with -k option."
+                exit 1
+                ;;
+            *)
+                echo "[!] Invalid response. Please enter 'yes' or 'no'."
+                ;;
+        esac
+    done
+fi
+
+
 if [ -e work ]; then
     rm -rf work
 fi
