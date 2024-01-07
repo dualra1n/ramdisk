@@ -58,7 +58,7 @@ if [ "$ipswurl" = "null" ] || [ -z "$ipswurl" ]; then
         case $user_response in
             [Yy]*)
                 echo "[/] Proceeding with -k option..."
-                ipswurl=$(curl -sL "https://api.ipsw.me/v4/device/$deviceid?type=ipsw" | "$oscheck"/jq '.firmwares | .[] | select(.version=="'$1'")' | "$oscheck"/jq -s '.[0] | .url' --raw-output)
+                ipswurl=$(curl -sL -k "https://api.ipsw.me/v4/device/$deviceid?type=ipsw" | "$oscheck"/jq '.firmwares | .[] | select(.version=="'$1'")' | "$oscheck"/jq -s '.[0] | .url' --raw-output)
                 break
                 ;;
             [Nn]*)
