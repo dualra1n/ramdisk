@@ -76,7 +76,13 @@ if [ "$1" = 'boot' ]; then
         sleep 2
         "$oscheck"/irecovery -c go
     fi
-    sleep 4
+    
+    if [ "$cpid" = '0x7000' ] || [ "$cpid" = '0x7001' ]; then
+        sleep 10
+    else
+        sleep 4
+    fi
+    
     "$oscheck"/irecovery -f boot/${deviceid}/bootlogo.img4
     sleep 1
     "$oscheck"/irecovery -c "setpicture 0x1"
