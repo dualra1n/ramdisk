@@ -15,7 +15,7 @@ ERR_HANDLER () {
 trap ERR_HANDLER EXIT
 
 # Check for pyimg4
-if ! python3 -c 'import pkgutil; exit(not pkgutil.find_loader("pyimg4"))'; then
+if ! python3 -c 'import importlib.util; exit(not importlib.util.find_spec("pyimg4"))'; then
     echo '[-] pyimg4 not installed. Press any key to install it, or press ctrl + c to cancel'
     read -n 1 -s
     python3 -m pip install pyimg4
