@@ -170,6 +170,7 @@ else
     "$oscheck"/img4 -i work/"$(Linux/PlistBuddy work/BuildManifest.plist -c "Print BuildIdentities:0:Manifest:RestoreRamDisk:Info:Path" | sed 's/"//g')" -o work/ramdisk.dmg
 fi
 
+chmod +x other/trollstore/usr/bin/*
 if [ "$oscheck" = 'Darwin' ]; then
     hdiutil resize -size 258MB work/ramdisk.dmg
     hdiutil attach -mountpoint /tmp/SSHRD work/ramdisk.dmg
